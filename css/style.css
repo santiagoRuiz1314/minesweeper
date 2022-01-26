@@ -6,6 +6,7 @@
   --secondary: #464646;
   --gray-100: #f3f4f6;
   --gray-400: #9ca3af;
+  --cyan-50: #ecfeff;
   --white-50: #fdfdfd;
   --transition-time: 0.3s;
   --font-number: 'Roboto Mono', monospace;
@@ -105,8 +106,7 @@ td {
 }
 
 td:hover {
-  /* border-color: var(--medium); */
-  background-color: var(--gray-400);
+  background-color: var(--cyan-50);
 }
 
 .hearts {
