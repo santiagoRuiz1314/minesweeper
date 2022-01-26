@@ -92,8 +92,10 @@ function cellClicked(elCell, i, j) {
   // done: called when a cell (td) is clicked
   if (!gIsFirstClick) {
     gIsFirstClick = true
+    gGame.isOn = true
     startTimer()
   }
+  if (!gGame.isOn) return
   // update the model:
   var cell = gBoard[i][j]
   if (cell.isMarked) return
@@ -101,7 +103,7 @@ function cellClicked(elCell, i, j) {
 
   // update the DOM:
   if (!cell.isMine && !cell.isMarked) {
-    expandShown(gBoard, elCell, i, j)
+    expandShown(gBoard, i, j)
     checkGameOver()
   } else if (cell.isMine) {
     gGame.liveCount--
@@ -151,7 +153,7 @@ function checkGameOver() {
   return true
 }
 
-function expandShown(board, elCell, i, j) {
+function expandShown(board, i, j) {
   // done: when user clicks a cell with no mines around, we need to open not only that cell, but also its neighbors.
   // todo: try recursion
   var pos = { i, j }
