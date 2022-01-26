@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Minesweeper</title>
+  </head>
+  <body onload="initGame()">
+    <h1>Hello World</h1>
+
+    <div class="timer"><span class="minutes">00</span>:<span class="seconds">00</span></div>
+    <!-- <div class="btn-group">
+      <button class="btn-timer" onclick="startTimer()">Start</button>
+      <button class="btn-timer" onclick="stopTimer()">Stop</button>
+    </div> -->
+
+    <div class="btn-group">
+      <button class="btn-level btn-easy" onclick="setLevel(4)">Easy (4 x 4)</button>
+      <button class="btn-level btn-medium" onclick="setLevel(8)">Medium (8 x 8)</button>
+      <button class="btn-level btn-hard" onclick="setLevel(12)">Hard (12 x 12)</button>
+    </div>
+
+    <table>
+      <tbody class="board"></tbody>
+    </table>
+
+    <script src="js/util.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

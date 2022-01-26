@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
+:root {
+  --primary: #4040c2;
+  --secondary: #464646;
+  --white-50: #fdfdfd;
+  --transition-time: 0.3s;
+  --font-number: 'Roboto Mono', monospace;
+  --font-regular: 'Roboto', sans-serif;
+  --easy: #2dd4bf;
+  --medium: #818cf8;
+  --hard: #f87171;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-regular);
+}
+
+body {
+  background-color: #fdfdfd;
+  text-align: center;
+}
+
+.timer {
+  font-size: 1.5rem;
+  font-weight: 300;
+  font-family: var(--font-number);
+}
+
+.btn-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-block: 1rem;
+}
+
+.btn-group .btn-timer {
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 2rem;
+  border: 1px solid var(--secondary);
+  border-radius: 0.4em;
+  background-color: var(--white-50);
+  cursor: pointer;
+  transition: var(--transition-time);
+}
+
+.btn-group .btn-timer:hover {
+  border-color: var(--primary);
+  background-color: var(--primary);
+  color: var(--white-50);
+}
+
+.btn-group .btn-level {
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 2rem;
+  border: 1px solid var(--secondary);
+  border-radius: 0.4em;
+  background-color: var(--white-50);
+  cursor: pointer;
+  transition: var(--transition-time);
+}
+
+.btn-group .btn-level:hover {
+  color: var(--white-50);
+  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+}
+
+.btn-level.btn-easy:hover {
+  background-color: var(--easy);
+  border-color: var(--easy);
+}
+.btn-level.btn-medium:hover {
+  background-color: var(--medium);
+  border-color: var(--medium);
+}
+.btn-level.btn-hard:hover {
+  background-color: var(--hard);
+  border-color: var(--hard);
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid var(--secondary);
+  width: 60px;
+  height: 60px;
+  font-family: var(--font-number);
+}
