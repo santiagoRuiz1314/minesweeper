@@ -33,6 +33,7 @@ function initGame() {
   gBoard = buildBoard()
   printBoardForDebug(gBoard)
   console.log('gBoard', gBoard)
+  renderLives()
   renderBoard()
 }
 
@@ -104,7 +105,7 @@ function cellClicked(elCell, i, j) {
     checkGameOver()
   } else if (cell.isMine) {
     gGame.liveCount--
-    console.log('gGame.liveCount', gGame.liveCount)
+    renderLives()
     renderCell(elCell, cell)
     checkGameOver()
   }
@@ -119,14 +120,16 @@ function cellMarked(elCell, i, j) {
 
   // update the DOM
   elCell.innerText = cell.isMarked ? FLAG : null
+  checkGameOver()
 }
 
 function checkGameOver() {
-  // todo: game ends when all mines are marked, and all the other cells are shown
+  // done: game ends when all mines are marked, and all the other cells are shown
   if (!gGame.liveCount) {
     gGame.isOn = false
     stopTimer()
     revealAllMines()
+    openAlert(false)
     return
   }
 
@@ -144,6 +147,7 @@ function checkGameOver() {
 
   gGame.isOn = false
   stopTimer()
+  openAlert(true)
   return true
 }
 
@@ -251,4 +255,20 @@ function revealAllMines() {
       if (currCell.isMine) renderCell(elCell, currCell)
     }
   }
+}
+
+function renderLives() {
+  var strHTML = `<span class="heart">❤</span>`.repeat(gGame.liveCount)
+  document.querySelector('.stats .lives').innerHTML = strHTML
+}
+
+function openAlert(isWin) {
+  var elAlert = document.querySelector('.alert')
+  elAlert.querySelector('.msg').innerText = isWin ? 'You won! :)' : 'You Lose! :('
+  elAlert.style.backgroundColor = isWin ? '#2dd4bf' : '#f87171'
+  elAlert.classList.toggle('active')
+}
+
+function closeAlert() {
+  document.querySelector('.alert').classList.toggle('active')
 }
