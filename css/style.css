@@ -4,6 +4,8 @@
 :root {
   --primary: #4040c2;
   --secondary: #464646;
+  --gray-100: #f3f4f6;
+  --gray-400: #9ca3af;
   --white-50: #fdfdfd;
   --transition-time: 0.3s;
   --font-number: 'Roboto Mono', monospace;
@@ -11,6 +13,9 @@
   --easy: #2dd4bf;
   --medium: #818cf8;
   --hard: #f87171;
+  --success: #edf7ed;
+  --danger: #fdeded;
+  --circle-bg: #0000000a;
 }
 
 * {
@@ -95,6 +100,13 @@ td {
   width: 60px;
   height: 60px;
   font-family: var(--font-number);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+td:hover {
+  /* border-color: var(--medium); */
+  background-color: var(--gray-400);
 }
 
 .hearts {
@@ -144,8 +156,17 @@ td {
   transition: 0.2s;
 }
 
-.btn-alert:hover {
-  color: var(--white-50);
+.icon-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0.4rem 0.5rem;
+  transition: 0.2s;
+}
+
+.icon-close:hover {
+  background-color: var(--circle-bg);
 }
 
 @keyframes openAlert {

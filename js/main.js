@@ -265,7 +265,7 @@ function renderLives() {
 function openAlert(isWin) {
   var elAlert = document.querySelector('.alert')
   elAlert.querySelector('.msg').innerText = isWin ? 'You won! :)' : 'You Lose! :('
-  elAlert.style.backgroundColor = isWin ? '#2dd4bf' : '#f87171'
+  elAlert.style.backgroundColor = isWin ? 'var(--success)' : 'var(--danger)'
   elAlert.classList.toggle('active')
 }
 
