@@ -139,14 +139,22 @@ td:hover {
 
 .stats {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 3rem;
+  /* gap: 3rem; */
   background-color: var(--white-50);
   padding-inline: 1.5rem;
   padding-block: 0.5rem;
   border-radius: 0.4rem;
   border: 1px solid var(--gray-400);
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
 }
 
 .smiley {
@@ -231,6 +239,10 @@ td:hover {
   font-weight: 100;
   font-size: 1rem;
   color: var(--gray-400);
+}
+
+.active-hint {
+  background-color: var(--gray-100);
 }
 
 @keyframes openAlert {

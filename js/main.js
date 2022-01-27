@@ -13,6 +13,8 @@ var gGame = {
   markedCount: 0,
   secsPassed: 0,
   liveCount: 3,
+  isHint: false,
+  hintCount: 3,
 }
 var gIsFirstClick = false
 
@@ -28,6 +30,8 @@ function initGame() {
     markedCount: 0,
     secsPassed: 0,
     liveCount: 3,
+    isHint: false,
+    hintCount: 3,
   }
   gBoard = buildBoard()
   printBoardForDebug(gBoard)
@@ -91,6 +95,10 @@ function renderBoard() {
 function cellClicked(elCell, i, j) {
   // done: called when a cell (td) is clicked
   checkFirstClick({ i, j })
+  if (gGame.isHint) {
+    checkHintClick({ i, j })
+    return
+  }
 
   if (!gGame.isOn) return
   // update the model:
@@ -162,7 +170,7 @@ function cellMarked(elCell, i, j) {
   // update the DOM
   elCell.innerText = cell.isMarked ? FLAG : null
   if (elCell.classList.contains('danger')) elCell.classList.remove('danger')
-  elCell.classList.add('success')
+  elCell.classList.toggle('success')
   checkGameOver()
 }
 
@@ -173,7 +181,7 @@ function checkGameOver() {
     stopTimer()
     revealAllMines()
     openAlert(false)
-    changeSmiley(false)
+    renderSmiley(false)
     return
   }
 
@@ -192,7 +200,7 @@ function checkGameOver() {
   gGame.isOn = false
   stopTimer()
   openAlert(true)
-  changeSmiley(true)
+  renderSmiley(true)
   return true
 }
 
@@ -323,7 +331,52 @@ function checkFirstClick(pos) {
   }
 }
 
-function changeSmiley(isWin) {
+function renderSmiley(isWin) {
   var elSmiley = document.querySelector('.stats .smiley')
   elSmiley.innerText = isWin ? '😎' : '🤯'
+}
+
+function toggleHintMode() {
+  gGame.isHint = !gGame.isHint
+}
+
+function checkHintClick(pos) {
+  gGame.isHint = false
+  gGame.hintCount--
+  var negsLocation = findNegsLocation(gBoard, pos)
+  negsLocation.push(pos)
+
+  for (var i = 0; i < negsLocation.length; i++) {
+    var currLoc = negsLocation[i]
+    // model
+    var cell = gBoard[currLoc.i][currLoc.j]
+    // update DOM
+    var elCell = getCellByClass({ i: currLoc.i, j: currLoc.j })
+    elCell.classList.toggle('active-hint')
+    // renderCell(elCell, cell)
+    if (cell.isMine && !cell.isMarked) {
+      elCell.innerText = '💣'
+    } else if (cell.minesAroundCount > 0 && !cell.isMarked) {
+      elCell.innerText = cell.minesAroundCount
+    } else if (cell.minesAroundCount === 0 && !cell.isMarked) {
+      elCell.innerText = ''
+    } else if (cell.isMarked) {
+      elCell.innerText = '🚩'
+    }
+  }
+
+  setTimeout(() => {
+    for (var i = 0; i < negsLocation.length; i++) {
+      var currLoc = negsLocation[i]
+      // model
+      var cell = gBoard[currLoc.i][currLoc.j]
+      // update DOM
+      var elCell = getCellByClass({ i: currLoc.i, j: currLoc.j })
+
+      if (!cell.isShown && !cell.isMarked) {
+        elCell.classList.remove('active-hint')
+        elCell.innerText = ''
+      }
+    }
+  }, 1000)
 }
