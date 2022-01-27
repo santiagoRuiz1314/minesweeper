@@ -91,7 +91,6 @@ function findNegsLocation(board, pos) {
       if (j < 0 || j >= board[0].length) continue
       if (pos.i === i && pos.j === j) continue
 
-      // var currCell = board[i][j]
       negsLocation.push({ i, j })
     }
   }

@@ -20,7 +20,6 @@ var MINE = '💣'
 var FLAG = '🚩'
 
 function initGame() {
-  console.log('starting app...')
   resetTimer()
   gIsFirstClick = false
   gGame = {
@@ -32,7 +31,6 @@ function initGame() {
   }
   gBoard = buildBoard()
   printBoardForDebug(gBoard)
-  console.log('gBoard', gBoard)
   renderLives()
   renderBoard()
   var elSmiley = document.querySelector('.stats .smiley')
@@ -98,17 +96,26 @@ function cellClicked(elCell, i, j) {
   // update the model:
   var cell = gBoard[i][j]
   if (cell.isMarked) return
+  if (cell.isShown) return
 
   // update the DOM:
   if (!cell.isMine) {
     expandShown(gBoard, i, j)
     checkGameOver()
   } else if (cell.isMine) {
+    var elSmiley = document.querySelector('.stats .smiley')
+    elSmiley.innerText = '😖'
     cell.isShown = true
     gGame.liveCount--
     renderLives()
     renderCell(elCell, cell)
     checkGameOver()
+    if (gGame.isOn) {
+      setTimeout(function () {
+        // var elSmiley = document.querySelector('.stats .smiley')
+        elSmiley.innerText = '😀'
+      }, 400)
+    }
   }
 }
 
@@ -287,6 +294,7 @@ function revealAllMines() {
 
 function renderLives() {
   var strHTML = `<span class="heart">❤</span>`.repeat(gGame.liveCount)
+  strHTML += `<span class="death">❤</span>`.repeat(3 - gGame.liveCount)
   document.querySelector('.stats .lives').innerHTML = strHTML
 }
 
@@ -299,7 +307,7 @@ function openAlert(isWin) {
 }
 
 function closeAlert() {
-  document.querySelector('.alert').classList.toggle('active')
+  document.querySelector('.alert').classList.remove('active')
 }
 
 function checkFirstClick(pos) {
