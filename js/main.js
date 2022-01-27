@@ -93,23 +93,55 @@ function cellClicked(elCell, i, j) {
   if (!gIsFirstClick) {
     gIsFirstClick = true
     gGame.isOn = true
-    startTimer()
+    // startTimer()
   }
   if (!gGame.isOn) return
   // update the model:
   var cell = gBoard[i][j]
   if (cell.isMarked) return
-  cell.isShown = true
 
   // update the DOM:
-  if (!cell.isMine && !cell.isMarked) {
+  if (!cell.isMine) {
     expandShown(gBoard, i, j)
     checkGameOver()
   } else if (cell.isMine) {
+    cell.isShown = true
     gGame.liveCount--
     renderLives()
     renderCell(elCell, cell)
     checkGameOver()
+  }
+}
+
+function expandShown(board, i, j) {
+  // done: when user clicks a cell with no mines around, we need to open not only that cell, but also its neighbors.
+  // done: try recursion
+  var elCell = getCellByClass({ i, j })
+  var pos = { i, j }
+  var cell = board[i][j]
+  cell.isShown = true
+  renderCell(elCell, cell)
+
+  if (cell.minesAroundCount > 0) {
+    return
+  }
+
+  for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+    if (i < 0 || i >= board.length) continue
+    for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+      if (j < 0 || j >= board[0].length) continue
+      if (pos.i === i && pos.j === j) continue
+
+      var currCell = board[i][j]
+
+      if (!currCell.isMine && !currCell.isMarked && currCell.minesAroundCount === 0 && !currCell.isShown) {
+        expandShown(board, i, j)
+      } else if (!currCell.isMine && !currCell.isMarked && currCell.minesAroundCount > 0 && !currCell.isShown) {
+        currCell.isShown = true
+        var elCell = getCellByClass({ i, j })
+        renderCell(elCell, currCell)
+      }
+    }
   }
 }
 
@@ -151,34 +183,6 @@ function checkGameOver() {
   stopTimer()
   openAlert(true)
   return true
-}
-
-function expandShown(board, i, j) {
-  // done: when user clicks a cell with no mines around, we need to open not only that cell, but also its neighbors.
-  // todo: try recursion
-  var pos = { i, j }
-  var clickedCell = board[i][j]
-  var cellsLocationToShow = [{ i, j }]
-  for (var i = pos.i - 1; i <= pos.i + 1; i++) {
-    if (i < 0 || i >= board.length) continue
-    for (var j = pos.j - 1; j <= pos.j + 1; j++) {
-      if (j < 0 || j >= board[0].length) continue
-      if (pos.i === i && pos.j === j) continue
-      var cell = board[i][j]
-
-      if (!cell.isMine && !cell.isMarked && !clickedCell.minesAroundCount) {
-        cell.isShown = true
-        cellsLocationToShow.push({ i, j })
-      }
-    }
-  }
-
-  for (var i = 0; i < cellsLocationToShow.length; i++) {
-    var pos = cellsLocationToShow[i]
-    var currCell = board[pos.i][pos.j]
-    var elCurrCell = getCellByClass(pos)
-    renderCell(elCurrCell, currCell)
-  }
 }
 
 function getEmptyPlaces(mat) {
