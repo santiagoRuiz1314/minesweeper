@@ -36,6 +36,7 @@ function initGame() {
   gBoard = buildBoard()
   printBoardForDebug(gBoard)
   renderLives()
+  renderHints()
   renderBoard()
   var elSmiley = document.querySelector('.stats .smiley')
   elSmiley.innerText = '😀'
@@ -180,7 +181,7 @@ function checkGameOver() {
     gGame.isOn = false
     stopTimer()
     revealAllMines()
-    openAlert(false)
+    openAlert(false, 'Oof. You lost!')
     renderSmiley(false)
     return
   }
@@ -199,7 +200,7 @@ function checkGameOver() {
 
   gGame.isOn = false
   stopTimer()
-  openAlert(true)
+  openAlert(true, 'You won the game!')
   renderSmiley(true)
   return true
 }
@@ -306,9 +307,15 @@ function renderLives() {
   document.querySelector('.stats .lives').innerHTML = strHTML
 }
 
-function openAlert(isWin) {
+function renderHints() {
+  var strHTML = `<span class="hint">💡</span>`.repeat(gGame.hintCount)
+  strHTML += `<span class="hint">❌</span>`.repeat(3 - gGame.hintCount)
+  document.querySelector('.hints').innerHTML = strHTML
+}
+
+function openAlert(isWin, msg = '') {
   var elAlert = document.querySelector('.alert')
-  elAlert.querySelector('.msg').innerText = isWin ? 'You won! :)' : 'You Lose! :('
+  elAlert.querySelector('.msg').innerText = msg
   elAlert.style.backgroundColor = isWin ? 'var(--success)' : 'var(--danger)'
   elAlert.classList.toggle('active')
   setTimeout(closeAlert, 3000)
@@ -342,7 +349,12 @@ function toggleHintMode() {
 
 function checkHintClick(pos) {
   gGame.isHint = false
+  if (!gGame.hintCount) {
+    openAlert(false, 'You used all your hints!')
+    return
+  }
   gGame.hintCount--
+  renderHints()
   var negsLocation = findNegsLocation(gBoard, pos)
   negsLocation.push(pos)
 
