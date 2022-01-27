@@ -245,6 +245,10 @@ td:hover {
   background-color: var(--gray-100);
 }
 
+.hints {
+  cursor: pointer;
+}
+
 @keyframes openAlert {
   from {
     transform: translateX(-100%);
