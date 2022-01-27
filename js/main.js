@@ -35,6 +35,8 @@ function initGame() {
   console.log('gBoard', gBoard)
   renderLives()
   renderBoard()
+  var elSmiley = document.querySelector('.stats .smiley')
+  elSmiley.innerText = '😀'
 }
 
 function buildBoard() {
@@ -52,10 +54,10 @@ function buildBoard() {
     }
   }
   // done: set mines at random locations
-  var emptyPlaces = getEmptyPlaces(mat)
-  setMinesAtRandomLocation(mat, emptyPlaces)
+  // var emptyPlaces = getEmptyPlaces(mat)
+  // setMinesAtRandomLocation(mat, emptyPlaces)
   // done: call setMinesNegsCount()
-  setMinesNegsCount(mat)
+  // setMinesNegsCount(mat)
   // done: return the created board
   return mat
 }
@@ -90,11 +92,8 @@ function renderBoard() {
 
 function cellClicked(elCell, i, j) {
   // done: called when a cell (td) is clicked
-  if (!gIsFirstClick) {
-    gIsFirstClick = true
-    gGame.isOn = true
-    // startTimer()
-  }
+  checkFirstClick({ i, j })
+
   if (!gGame.isOn) return
   // update the model:
   var cell = gBoard[i][j]
@@ -147,6 +146,7 @@ function expandShown(board, i, j) {
 
 function cellMarked(elCell, i, j) {
   // done: called on right click to mark a cell (suspected to be a mine)
+  checkFirstClick({ i, j })
   var location = { i, j }
   // update the model
   var cell = gBoard[location.i][location.j]
@@ -154,6 +154,8 @@ function cellMarked(elCell, i, j) {
 
   // update the DOM
   elCell.innerText = cell.isMarked ? FLAG : null
+  if (elCell.classList.contains('danger')) elCell.classList.remove('danger')
+  elCell.classList.add('success')
   checkGameOver()
 }
 
@@ -164,6 +166,7 @@ function checkGameOver() {
     stopTimer()
     revealAllMines()
     openAlert(false)
+    changeSmiley(false)
     return
   }
 
@@ -182,6 +185,7 @@ function checkGameOver() {
   gGame.isOn = false
   stopTimer()
   openAlert(true)
+  changeSmiley(true)
   return true
 }
 
@@ -197,13 +201,26 @@ function getEmptyPlaces(mat) {
   return emptyPlaces
 }
 
-function setMinesAtRandomLocation(mat, locations) {
+function setMinesAtRandomLocation(mat, locations, pos) {
   var copyLocations = JSON.parse(JSON.stringify(locations))
+  var negsLocation = findNegsLocation(gBoard, pos)
+
+  // clean negs location:
+  for (var i = 0; i < negsLocation.length; i++) {
+    var currNeg = negsLocation[i]
+    for (var j = 0; j < copyLocations.length; j++) {
+      var currLoc = copyLocations[j]
+      if (currNeg.i === currLoc.i && currNeg.j === currLoc.j) copyLocations.splice(j, 1)
+    }
+  }
   shuffleArray(copyLocations)
 
-  for (var i = 0; i < gLevel.MINES; i++) {
+  var minesCount = 0
+  while (minesCount < gLevel.MINES) {
     var randomLocation = copyLocations.pop()
+    if (randomLocation.i === pos.i && randomLocation.j === pos.j) continue
     mat[randomLocation.i][randomLocation.j].isMine = true
+    minesCount++
   }
 }
 
@@ -224,8 +241,13 @@ function countNearMines(mat, pos) {
 }
 
 function renderCell(elCell, cell) {
-  if (cell.isMine) elCell.innerText = MINE
-  else elCell.innerText = cell.minesAroundCount
+  if (cell.isMine) {
+    elCell.innerText = MINE
+    elCell.classList.add('danger')
+  } else {
+    elCell.innerText = cell.minesAroundCount ? cell.minesAroundCount : ''
+    elCell.classList.add('success')
+  }
 }
 
 function getCellByClass(pos) {
@@ -273,8 +295,27 @@ function openAlert(isWin) {
   elAlert.querySelector('.msg').innerText = isWin ? 'You won! :)' : 'You Lose! :('
   elAlert.style.backgroundColor = isWin ? 'var(--success)' : 'var(--danger)'
   elAlert.classList.toggle('active')
+  setTimeout(closeAlert, 3000)
 }
 
 function closeAlert() {
   document.querySelector('.alert').classList.toggle('active')
+}
+
+function checkFirstClick(pos) {
+  if (!gIsFirstClick) {
+    gIsFirstClick = true
+    gGame.isOn = true
+    // set mines:
+    var emptyPlaces = getEmptyPlaces(gBoard)
+    setMinesAtRandomLocation(gBoard, emptyPlaces, pos)
+    setMinesNegsCount(gBoard)
+    printBoardForDebug(gBoard)
+    startTimer()
+  }
+}
+
+function changeSmiley(isWin) {
+  var elSmiley = document.querySelector('.stats .smiley')
+  elSmiley.innerText = isWin ? '😎' : '🤯'
 }

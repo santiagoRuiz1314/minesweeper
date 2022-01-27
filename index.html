@@ -9,30 +9,38 @@
     <title>Minesweeper</title>
   </head>
   <body onload="initGame()">
-    <h1>Hello World</h1>
+    <section class="main-container">
+      <main class="main-container">
+        <h1>Minesweeper</h1>
 
-    <div class="timer"><span class="minutes">00</span>:<span class="seconds">00</span></div>
-    <!-- <div class="btn-group">
-      <button class="btn-timer" onclick="startTimer()">Start</button>
-      <button class="btn-timer" onclick="stopTimer()">Stop</button>
-    </div> -->
+        <!-- <div class="btn-group">
+        <button class="btn-timer" onclick="startTimer()">Start</button>
+        <button class="btn-timer" onclick="stopTimer()">Stop</button>
+      </div> -->
 
-    <div class="btn-group">
-      <button class="btn-level btn-easy" onclick="setLevel(4)">Easy (4 x 4)</button>
-      <button class="btn-level btn-medium" onclick="setLevel(8)">Medium (8 x 8)</button>
-      <button class="btn-level btn-hard" onclick="setLevel(12)">Hard (12 x 12)</button>
-    </div>
+        <div class="btn-group">
+          <button class="btn-level btn-easy" onclick="setLevel(4)">Easy (4 x 4)</button>
+          <button class="btn-level btn-medium" onclick="setLevel(8)">Medium (8 x 8)</button>
+          <button class="btn-level btn-hard" onclick="setLevel(12)">Hard (12 x 12)</button>
+        </div>
 
-    <div class="stats">
-      <div class="hearts">
-        <p>Lives:</p>
-        <div class="lives"></div>
-      </div>
-    </div>
+        <div class="stats">
+          <div class="timer"><span class="minutes">00</span>:<span class="seconds">00</span></div>
+          <div class="smiley" onclick="initGame()"></div>
+          <div class="hearts">
+            <div class="lives"></div>
+          </div>
+        </div>
 
-    <table>
-      <tbody class="board"></tbody>
-    </table>
+        <table>
+          <tbody class="board"></tbody>
+        </table>
+      </main>
+
+      <footer class="main-footer">
+        <p>Made by Avior Kahalani &copy; 2022</p>
+      </footer>
+    </section>
 
     <div class="alert">
       <div class="msg"></div>

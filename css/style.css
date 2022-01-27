@@ -31,6 +31,22 @@ body {
   text-align: center;
 }
 
+section {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 0.5rem;
+}
+
 .timer {
   font-size: 1.5rem;
   font-weight: 300;
@@ -42,7 +58,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding-block: 1rem;
+  padding-block: 0.2rem;
 }
 
 .btn-group .btn-timer {
@@ -92,21 +108,37 @@ body {
 }
 
 table {
-  margin: 0 auto;
+  /* margin: 0 auto; */
   border-collapse: collapse;
 }
 
 td {
   border: 1px solid var(--secondary);
-  width: 60px;
-  height: 60px;
+  background-color: var(--gray-400);
+  width: 40px;
+  height: 40px;
   font-family: var(--font-number);
   cursor: pointer;
   transition: var(--transition-time);
 }
 
+td.success {
+  background: var(--success);
+}
+
+td.danger {
+  background-color: var(--danger);
+}
+
 td:hover {
   background-color: var(--cyan-50);
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
 }
 
 .hearts {
@@ -167,6 +199,14 @@ td:hover {
 
 .icon-close:hover {
   background-color: var(--circle-bg);
+}
+
+.main-footer {
+  padding-block: 0.5rem;
+  justify-self: flex-end;
+  font-weight: 100;
+  font-size: 1rem;
+  color: var(--gray-400);
 }
 
 @keyframes openAlert {

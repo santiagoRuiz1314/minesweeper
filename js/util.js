@@ -82,3 +82,18 @@ function printBoardForDebug(mat) {
   }
   console.table(printedMat)
 }
+
+function findNegsLocation(board, pos) {
+  var negsLocation = []
+  for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+    if (i < 0 || i >= board.length) continue
+    for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+      if (j < 0 || j >= board[0].length) continue
+      if (pos.i === i && pos.j === j) continue
+
+      // var currCell = board[i][j]
+      negsLocation.push({ i, j })
+    }
+  }
+  return negsLocation
+}
