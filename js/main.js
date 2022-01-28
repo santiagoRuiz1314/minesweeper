@@ -300,7 +300,8 @@ function getEmptyPlaces(mat) {
   return emptyPlaces
 }
 
-// Bonuses!
+/* ========== Bonus Tasks ========== */
+// bonus - hints
 function toggleHintMode() {
   gGame.isHint = !gGame.isHint
   openAlert(true, 'You can click a cell to see the hint!')
@@ -352,6 +353,7 @@ function checkHintClick(pos) {
   }, 1000)
 }
 
+// bonus - safe clicks
 function toggleSafeMode() {
   gGame.isSafeClick = true
   if (gGame.isSafeClick) {
@@ -394,6 +396,7 @@ function checkSafeClick() {
   }, 1000)
 }
 
+// bonus - 7 BOOM!
 function toggle7Boom() {
   gGame.is7Boom = !gGame.is7Boom
   renderActiveBtn('.btn-boom', gGame.is7Boom)
