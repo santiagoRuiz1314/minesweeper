@@ -61,3 +61,10 @@ function openAlert(isWin, msg = '') {
 function closeAlert() {
   document.querySelector('.alert').classList.remove('active')
 }
+
+function renderActiveBtn(selector, isActive) {
+  var element = document.querySelector(selector)
+  console.log('element', element)
+  if (isActive) element.classList.add('active')
+  else element.classList.remove('active')
+}

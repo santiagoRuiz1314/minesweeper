@@ -17,29 +17,49 @@ var gGame = {
   hintCount: 3,
   isSafeClick: false,
   safeClickCount: 3,
+  is7Boom: false,
 }
 var gIsFirstClick = false
 var MINE = '💣'
 var FLAG = '🚩'
 
 function initGame() {
+  console.log('after 7 boom')
   resetTimer()
   gIsFirstClick = false
-  gGame = {
-    isOn: false,
-    shownCount: 0,
-    markedCount: 0,
-    secsPassed: 0,
-    liveCount: 3,
-    isHint: false,
-    hintCount: 3,
-    isSafeClick: false,
-    safeClickCount: 3,
-  }
-  gBoard = buildBoard()
+
   renderLives()
   renderHints()
   renderSafeClicks()
+  if (gGame.is7Boom) {
+    gGame = {
+      isOn: false,
+      shownCount: 0,
+      markedCount: 0,
+      secsPassed: 0,
+      liveCount: 3,
+      isHint: false,
+      hintCount: 3,
+      isSafeClick: false,
+      safeClickCount: 3,
+      is7Boom: true,
+    }
+    gBoard = build7BoomBoard()
+  } else {
+    gGame = {
+      isOn: false,
+      shownCount: 0,
+      markedCount: 0,
+      secsPassed: 0,
+      liveCount: 3,
+      isHint: false,
+      hintCount: 3,
+      isSafeClick: false,
+      safeClickCount: 3,
+      is7Boom: false,
+    }
+    gBoard = buildBoard()
+  }
   renderBoard()
   printBoardForDebug(gBoard)
   var elSmiley = document.querySelector('.control-panel .smiley')
@@ -257,9 +277,11 @@ function checkFirstClick(pos) {
   if (!gIsFirstClick) {
     gIsFirstClick = true
     gGame.isOn = true
-    // set mines:
-    var emptyPlaces = getEmptyPlaces(gBoard)
-    setMinesAtRandomLocation(gBoard, emptyPlaces, pos)
+    if (!gGame.is7Boom) {
+      // set mines:
+      var emptyPlaces = getEmptyPlaces(gBoard)
+      setMinesAtRandomLocation(gBoard, emptyPlaces, pos)
+    }
     setMinesNegsCount(gBoard)
     printBoardForDebug(gBoard)
     startTimer()
@@ -370,4 +392,29 @@ function checkSafeClick() {
   setTimeout(() => {
     elCell.classList.remove('safe-active')
   }, 1000)
+}
+
+function toggle7Boom() {
+  gGame.is7Boom = !gGame.is7Boom
+  renderActiveBtn('.btn-boom', gGame.is7Boom)
+  initGame()
+}
+
+function build7BoomBoard() {
+  var mat = []
+  var count = 0
+  for (var i = 0; i < gLevel.SIZE; i++) {
+    mat[i] = []
+    for (var j = 0; j < gLevel.SIZE; j++) {
+      var idx = `${count++}`
+      mat[i][j] = {
+        minesAroundCount: 0,
+        isShown: false,
+        isMine: false,
+        isMarked: false,
+      }
+      if (+idx.charAt(0) === 7 || +idx.charAt(1) === 7 || (+idx % 7 === 0 && +idx !== 0)) mat[i][j].isMine = true
+    }
+  }
+  return mat
 }
