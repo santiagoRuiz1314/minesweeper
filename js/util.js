@@ -96,3 +96,8 @@ function findNegsLocation(board, pos) {
   }
   return negsLocation
 }
+
+function getCellByClass(pos) {
+  var elCell = document.querySelector(`.cell-${pos.i}-${pos.j}`)
+  return elCell
+}

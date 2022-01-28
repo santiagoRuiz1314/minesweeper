@@ -19,7 +19,6 @@ var gGame = {
   safeClickCount: 3,
 }
 var gIsFirstClick = false
-
 var MINE = '💣'
 var FLAG = '🚩'
 
@@ -38,17 +37,16 @@ function initGame() {
     safeClickCount: 3,
   }
   gBoard = buildBoard()
-  printBoardForDebug(gBoard)
   renderLives()
   renderHints()
   renderSafeClicks()
   renderBoard()
+  printBoardForDebug(gBoard)
   var elSmiley = document.querySelector('.control-panel .smiley')
   elSmiley.innerText = '😀'
 }
 
 function buildBoard() {
-  // done: build the board
   var mat = []
   for (var i = 0; i < gLevel.SIZE; i++) {
     mat[i] = []
@@ -61,12 +59,7 @@ function buildBoard() {
       }
     }
   }
-  // done: set mines at random locations
-  // var emptyPlaces = getEmptyPlaces(mat)
-  // setMinesAtRandomLocation(mat, emptyPlaces)
-  // done: call setMinesNegsCount()
-  // setMinesNegsCount(mat)
-  // done: return the created board
+
   return mat
 }
 
@@ -78,24 +71,6 @@ function setMinesNegsCount(board) {
       currCell.minesAroundCount = countNearMines(board, { i, j })
     }
   }
-}
-
-function renderBoard() {
-  // done: render the board as a <table> to the page
-  var strHTML = ``
-  for (var i = 0; i < gBoard.length; i++) {
-    strHTML += `<tr>\n`
-    for (var j = 0; j < gBoard.length; j++) {
-      var currCell = gBoard[i][j]
-      // var cellContent = currCell.isMine ? MINE : currCell.isShown ? currCell.minesAroundCount : ''
-      var cellContent = currCell.isShown ? (currCell.isMine ? MINE : currCell.minesAroundCount) : ''
-      strHTML += `\t<td class="cell-${i}-${j}" oncontextmenu="cellMarked(this, ${i}, ${j}); return false;" onclick="cellClicked(this, ${i}, ${j})">${cellContent}</td>\n`
-    }
-    strHTML += `</tr>\n`
-  }
-
-  var elBoard = document.querySelector('.board')
-  elBoard.innerHTML = strHTML
 }
 
 function cellClicked(elCell, i, j) {
@@ -134,7 +109,6 @@ function cellClicked(elCell, i, j) {
 
 function expandShown(board, i, j) {
   // done: when user clicks a cell with no mines around, we need to open not only that cell, but also its neighbors.
-  // done: try recursion
   var elCell = getCellByClass({ i, j })
   var pos = { i, j }
   var cell = board[i][j]
@@ -154,6 +128,7 @@ function expandShown(board, i, j) {
       var currCell = board[i][j]
 
       if (!currCell.isMine && !currCell.isMarked && currCell.minesAroundCount === 0 && !currCell.isShown) {
+        // recursion
         expandShown(board, i, j)
       } else if (!currCell.isMine && !currCell.isMarked && currCell.minesAroundCount > 0 && !currCell.isShown) {
         currCell.isShown = true
@@ -209,18 +184,6 @@ function checkGameOver() {
   return true
 }
 
-function getEmptyPlaces(mat) {
-  var emptyPlaces = []
-  for (var i = 0; i < mat.length; i++) {
-    for (var j = 0; j < mat[0].length; j++) {
-      var currCell = mat[i][j]
-      var cellLocation = { i, j }
-      if (!currCell.isMine) emptyPlaces.push(cellLocation)
-    }
-  }
-  return emptyPlaces
-}
-
 function setMinesAtRandomLocation(mat, locations, pos) {
   var copyLocations = JSON.parse(JSON.stringify(locations))
   var negsLocation = findNegsLocation(gBoard, pos)
@@ -260,21 +223,6 @@ function countNearMines(mat, pos) {
   return count
 }
 
-function renderCell(elCell, cell) {
-  if (cell.isMine) {
-    elCell.innerText = MINE
-    elCell.classList.add('danger')
-  } else {
-    elCell.innerText = cell.minesAroundCount ? cell.minesAroundCount : ''
-    elCell.classList.add('success')
-  }
-}
-
-function getCellByClass(pos) {
-  var elCell = document.querySelector(`.cell-${pos.i}-${pos.j}`)
-  return elCell
-}
-
 function setLevel(size) {
   switch (size) {
     case 4:
@@ -305,36 +253,6 @@ function revealAllMines() {
   }
 }
 
-function renderLives() {
-  var strHTML = `<span class="heart">❤</span>`.repeat(gGame.liveCount)
-  strHTML += `<span class="death">❤</span>`.repeat(3 - gGame.liveCount)
-  document.querySelector('.control-panel .lives').innerHTML = strHTML
-}
-
-function renderHints() {
-  var strHTML = `<span class="hint">💡</span>`.repeat(gGame.hintCount)
-  strHTML += `<span class="hint">❌</span>`.repeat(3 - gGame.hintCount)
-  document.querySelector('.hints').innerHTML = strHTML
-}
-
-function renderSafeClicks() {
-  var strHTML = `<span class="safe-click">⭐</span>`.repeat(gGame.safeClickCount)
-  strHTML += `<span class="safe-click">❌</span>`.repeat(3 - gGame.safeClickCount)
-  document.querySelector('.safe-clicks').innerHTML = strHTML
-}
-
-function openAlert(isWin, msg = '') {
-  var elAlert = document.querySelector('.alert')
-  elAlert.querySelector('.msg').innerText = msg
-  elAlert.style.backgroundColor = isWin ? 'var(--success)' : 'var(--danger)'
-  elAlert.classList.toggle('active')
-  setTimeout(closeAlert, 3000)
-}
-
-function closeAlert() {
-  document.querySelector('.alert').classList.remove('active')
-}
-
 function checkFirstClick(pos) {
   if (!gIsFirstClick) {
     gIsFirstClick = true
@@ -348,11 +266,19 @@ function checkFirstClick(pos) {
   }
 }
 
-function renderSmiley(isWin) {
-  var elSmiley = document.querySelector('.control-panel .smiley')
-  elSmiley.innerText = isWin ? '😎' : '🤯'
+function getEmptyPlaces(mat) {
+  var emptyPlaces = []
+  for (var i = 0; i < mat.length; i++) {
+    for (var j = 0; j < mat[0].length; j++) {
+      var currCell = mat[i][j]
+      var cellLocation = { i, j }
+      if (!currCell.isMine) emptyPlaces.push(cellLocation)
+    }
+  }
+  return emptyPlaces
 }
 
+// Bonuses!
 function toggleHintMode() {
   gGame.isHint = !gGame.isHint
   openAlert(true, 'You can click a cell to see the hint!')
