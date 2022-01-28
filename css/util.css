@@ -1,0 +1,57 @@
+:root {
+  --primary: #4040c2;
+  --secondary: #464646;
+  --gray-100: #f3f4f6;
+  --gray-400: #9ca3af;
+  --cyan-50: #ecfeff;
+  --white-50: #fdfdfd;
+  --easy: #2dd4bf;
+  --medium: #818cf8;
+  --hard: #f87171;
+  --success: #edf7ed;
+  --danger: #fdeded;
+  --circle-bg: #0000000a;
+  --font-number: 'Roboto Mono', monospace;
+  --font-regular: 'Roboto', sans-serif;
+  --transition-time: 0.3s;
+}
+
+.text-sm {
+  font-size: 0.7rem;
+  color: var(--gray-400);
+  margin: 0;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex.flex-col {
+  flex-direction: column;
+}
+
+.gap-1 {
+  gap: 0.5rem;
+}
+
+.gap-2 {
+  gap: 1rem;
+}
+
+.gap-3 {
+  gap: 1.5rem;
+}
+
+.gap-4 {
+  gap: 2.5rem;
+}
+
+.gap-5 {
+  gap: 3rem;
+}
+
+.c-pointer {
+  cursor: pointer;
+}

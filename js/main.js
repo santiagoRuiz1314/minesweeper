@@ -15,6 +15,8 @@ var gGame = {
   liveCount: 3,
   isHint: false,
   hintCount: 3,
+  isSafeClick: false,
+  safeClickCount: 3,
 }
 var gIsFirstClick = false
 
@@ -32,13 +34,16 @@ function initGame() {
     liveCount: 3,
     isHint: false,
     hintCount: 3,
+    isSafeClick: false,
+    safeClickCount: 3,
   }
   gBoard = buildBoard()
   printBoardForDebug(gBoard)
   renderLives()
   renderHints()
+  renderSafeClicks()
   renderBoard()
-  var elSmiley = document.querySelector('.stats .smiley')
+  var elSmiley = document.querySelector('.control-panel .smiley')
   elSmiley.innerText = '😀'
 }
 
@@ -112,7 +117,7 @@ function cellClicked(elCell, i, j) {
     expandShown(gBoard, i, j)
     checkGameOver()
   } else if (cell.isMine) {
-    var elSmiley = document.querySelector('.stats .smiley')
+    var elSmiley = document.querySelector('.control-panel .smiley')
     elSmiley.innerText = '😖'
     cell.isShown = true
     gGame.liveCount--
@@ -121,7 +126,6 @@ function cellClicked(elCell, i, j) {
     checkGameOver()
     if (gGame.isOn) {
       setTimeout(function () {
-        // var elSmiley = document.querySelector('.stats .smiley')
         elSmiley.innerText = '😀'
       }, 400)
     }
@@ -304,13 +308,19 @@ function revealAllMines() {
 function renderLives() {
   var strHTML = `<span class="heart">❤</span>`.repeat(gGame.liveCount)
   strHTML += `<span class="death">❤</span>`.repeat(3 - gGame.liveCount)
-  document.querySelector('.stats .lives').innerHTML = strHTML
+  document.querySelector('.control-panel .lives').innerHTML = strHTML
 }
 
 function renderHints() {
   var strHTML = `<span class="hint">💡</span>`.repeat(gGame.hintCount)
   strHTML += `<span class="hint">❌</span>`.repeat(3 - gGame.hintCount)
   document.querySelector('.hints').innerHTML = strHTML
+}
+
+function renderSafeClicks() {
+  var strHTML = `<span class="safe-click">⭐</span>`.repeat(gGame.safeClickCount)
+  strHTML += `<span class="safe-click">❌</span>`.repeat(3 - gGame.safeClickCount)
+  document.querySelector('.safe-clicks').innerHTML = strHTML
 }
 
 function openAlert(isWin, msg = '') {
@@ -339,12 +349,13 @@ function checkFirstClick(pos) {
 }
 
 function renderSmiley(isWin) {
-  var elSmiley = document.querySelector('.stats .smiley')
+  var elSmiley = document.querySelector('.control-panel .smiley')
   elSmiley.innerText = isWin ? '😎' : '🤯'
 }
 
 function toggleHintMode() {
   gGame.isHint = !gGame.isHint
+  openAlert(true, 'You can click a cell to see the hint!')
 }
 
 function checkHintClick(pos) {
@@ -365,7 +376,7 @@ function checkHintClick(pos) {
     // update DOM
     var elCell = getCellByClass({ i: currLoc.i, j: currLoc.j })
     elCell.classList.toggle('active-hint')
-    // renderCell(elCell, cell)
+
     if (cell.isMine && !cell.isMarked) {
       elCell.innerText = '💣'
     } else if (cell.minesAroundCount > 0 && !cell.isMarked) {
@@ -390,5 +401,47 @@ function checkHintClick(pos) {
         elCell.innerText = ''
       }
     }
+  }, 1000)
+}
+
+function toggleSafeMode() {
+  gGame.isSafeClick = true
+  if (gGame.isSafeClick) {
+    checkSafeClick()
+  }
+}
+
+function checkSafeClick() {
+  gGame.isSafeClick = false
+  if (!gGame.safeClickCount) {
+    openAlert(false, 'You used all your safe clicks!')
+    return
+  }
+  gGame.safeClickCount--
+  renderSafeClicks()
+
+  var safeLocations = []
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard[0].length; j++) {
+      var currCell = gBoard[i][j]
+      if (!currCell.isMine && !currCell.isMarked && !currCell.isShown) safeLocations.push({ i, j })
+    }
+  }
+
+  if (!safeLocations.length) {
+    openAlert(false, 'No more safe places!')
+    return
+  }
+
+  shuffleArray(safeLocations)
+  var randomLocation = safeLocations.pop()
+  // model
+  var cell = gBoard[randomLocation.i][randomLocation.j]
+  // update DOM
+  var elCell = getCellByClass({ i: randomLocation.i, j: randomLocation.j })
+  elCell.classList.add('safe-active')
+
+  setTimeout(() => {
+    elCell.classList.remove('safe-active')
   }, 1000)
 }

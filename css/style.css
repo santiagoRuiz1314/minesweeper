@@ -1,23 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
-
-:root {
-  --primary: #4040c2;
-  --secondary: #464646;
-  --gray-100: #f3f4f6;
-  --gray-400: #9ca3af;
-  --cyan-50: #ecfeff;
-  --white-50: #fdfdfd;
-  --easy: #2dd4bf;
-  --medium: #818cf8;
-  --hard: #f87171;
-  --success: #edf7ed;
-  --danger: #fdeded;
-  --circle-bg: #0000000a;
-  --font-number: 'Roboto Mono', monospace;
-  --font-regular: 'Roboto', sans-serif;
-  --transition-time: 0.3s;
-}
+@import url('./util.css');
+@import url('./animation.css');
 
 * {
   margin: 0;
@@ -34,50 +18,19 @@ body {
 }
 
 section {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
 }
 
 .main-container {
-  display: flex;
   flex: 1;
-  flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  gap: 1rem;
   padding-block: 0.5rem;
 }
 
-.timer {
-  font-size: 1.5rem;
-  font-weight: 300;
-  font-family: var(--font-number);
-}
-
+/* ================================  */
+/* levels buttons */
 .btn-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
   padding-block: 0.2rem;
-}
-
-.btn-group .btn-timer {
-  font-size: 1rem;
-  font-weight: 400;
-  padding: 0.5rem 2rem;
-  border: 1px solid var(--secondary);
-  border-radius: 0.4em;
-  background-color: var(--white-50);
-  cursor: pointer;
-  transition: var(--transition-time);
-}
-
-.btn-group .btn-timer:hover {
-  border-color: var(--primary);
-  background-color: var(--primary);
-  color: var(--white-50);
 }
 
 .btn-group .btn-level {
@@ -109,9 +62,51 @@ section {
   background-color: var(--hard);
   border-color: var(--hard);
 }
+/* ================================  */
 
+/* ================================  */
+/* control panel */
+.control-panel {
+  background-color: var(--white-50);
+  padding-inline: 1.5rem;
+  padding-block: 0.5rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--gray-400);
+}
+
+.timer {
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-family: var(--font-number);
+}
+
+.smiley {
+  font-size: 2rem;
+  cursor: pointer;
+  transition: var(--transition-time);
+}
+
+.smiley:hover {
+  transform: scale(120%);
+}
+
+.safe-active {
+  background-color: var(--medium);
+}
+
+.heart {
+  color: var(--hard);
+  font-size: 1.5rem;
+}
+
+.active-hint {
+  background-color: var(--gray-100);
+}
+/* ================================  */
+
+/* ================================  */
+/* board game */
 table {
-  /* margin: 0 auto; */
   border-collapse: collapse;
 }
 
@@ -136,60 +131,9 @@ td.danger {
 td:hover {
   background-color: var(--cyan-50);
 }
-
-.stats {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /* gap: 3rem; */
-  background-color: var(--white-50);
-  padding-inline: 1.5rem;
-  padding-block: 0.5rem;
-  border-radius: 0.4rem;
-  border: 1px solid var(--gray-400);
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3rem;
-}
-
-.smiley {
-  font-size: 2rem;
-  cursor: pointer;
-  transition: var(--transition-time);
-}
-
-.smiley:hover {
-  transform: scale(120%);
-}
-
-.hearts {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.lives {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.heart {
-  color: var(--hard);
-  font-size: 1.5rem;
-}
-
-.death {
-  color: var(--secondary);
-  font-size: 1.5rem;
-}
-
+/* ================================  */
+/* ================================  */
+/* alert msg */
 .alert {
   position: absolute;
   bottom: 20px;
@@ -206,8 +150,8 @@ td:hover {
 }
 
 .alert.active {
-  animation: openAlert var(--transition-time);
   display: flex;
+  animation: openAlert var(--transition-time);
 }
 
 .btn-alert {
@@ -221,9 +165,6 @@ td:hover {
 }
 
 .icon-close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 50%;
   padding: 0.4rem 0.5rem;
   transition: var(--transition-time);
@@ -232,7 +173,10 @@ td:hover {
 .icon-close:hover {
   background-color: var(--circle-bg);
 }
+/* ================================  */
 
+/* ================================  */
+/* footer */
 .main-footer {
   padding-block: 0.5rem;
   justify-self: flex-end;
@@ -240,20 +184,4 @@ td:hover {
   font-size: 1rem;
   color: var(--gray-400);
 }
-
-.active-hint {
-  background-color: var(--gray-100);
-}
-
-.hints {
-  cursor: pointer;
-}
-
-@keyframes openAlert {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0%);
-  }
-}
+/* ================================  */
