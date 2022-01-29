@@ -28,10 +28,8 @@ function initGame() {
   resetTimer()
   gIsFirstClick = false
 
-  renderLives()
-  renderHints()
-  renderSafeClicks()
   if (gGame.is7Boom) {
+    console.log('im here')
     gGame = {
       isOn: false,
       shownCount: 0,
@@ -60,6 +58,9 @@ function initGame() {
     }
     gBoard = buildBoard()
   }
+  renderLives()
+  renderHints()
+  renderSafeClicks()
   renderBoard()
   printBoardForDebug(gBoard)
   var elSmiley = document.querySelector('.control-panel .smiley')
@@ -165,6 +166,10 @@ function cellMarked(elCell, i, j) {
   var location = { i, j }
   // update the model
   var cell = gBoard[location.i][location.j]
+  if (cell.isShown) {
+    openAlert(false, 'You can not mark an opened cell 😖')
+    return
+  }
   cell.isMarked = !cell.isMarked
 
   // update the DOM

@@ -151,7 +151,7 @@ td:hover {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  width: 300px;
+  width: 400px;
   padding: 0.5rem 1rem;
   border-top: 2px solid var(--gray-400);
   border-right: 2px solid var(--gray-400);
