@@ -2,18 +2,18 @@
 
 function renderBoard() {
   // done: render the board as a <table> to the page
-  var strHTML = ``
-  for (var i = 0; i < gBoard.length; i++) {
+  let strHTML = ``
+  for (let i = 0; i < gBoard.length; i++) {
     strHTML += `<tr>\n`
-    for (var j = 0; j < gBoard.length; j++) {
-      var currCell = gBoard[i][j]
-      var cellContent = currCell.isShown ? (currCell.isMine ? MINE : currCell.minesAroundCount) : ''
+    for (let j = 0; j < gBoard.length; j++) {
+      const currCell = gBoard[i][j]
+      let cellContent = currCell.isShown ? (currCell.isMine ? MINE : currCell.minesAroundCount) : ''
       strHTML += `\t<td class="cell-${i}-${j}" oncontextmenu="cellMarked(this, ${i}, ${j}); return false;" onclick="cellClicked(this, ${i}, ${j})">${cellContent}</td>\n`
     }
     strHTML += `</tr>\n`
   }
 
-  var elBoard = document.querySelector('.board')
+  const elBoard = document.querySelector('.board')
   elBoard.innerHTML = strHTML
 }
 
@@ -28,30 +28,30 @@ function renderCell(elCell, cell) {
 }
 
 function renderSmiley(isWin) {
-  var elSmiley = document.querySelector('.control-panel .smiley')
+  const elSmiley = document.querySelector('.control-panel .smiley')
   elSmiley.innerText = isWin ? '😎' : '🤯'
 }
 
 function renderLives() {
-  var strHTML = `<span class="heart">❤️</span>`.repeat(gGame.liveCount)
+  let strHTML = `<span class="heart">❤️</span>`.repeat(gGame.liveCount)
   strHTML += `<span class="death">❤</span>`.repeat(3 - gGame.liveCount)
   document.querySelector('.control-panel .lives').innerHTML = strHTML
 }
 
 function renderHints() {
-  var strHTML = `<span class="hint">💡</span>`.repeat(gGame.hintCount)
+  let strHTML = `<span class="hint">💡</span>`.repeat(gGame.hintCount)
   strHTML += `<span class="hint">❌</span>`.repeat(3 - gGame.hintCount)
   document.querySelector('.hints').innerHTML = strHTML
 }
 
 function renderSafeClicks() {
-  var strHTML = `<span class="safe-click">⭐</span>`.repeat(gGame.safeClickCount)
+  let strHTML = `<span class="safe-click">⭐</span>`.repeat(gGame.safeClickCount)
   strHTML += `<span class="safe-click">❌</span>`.repeat(3 - gGame.safeClickCount)
   document.querySelector('.safe-clicks').innerHTML = strHTML
 }
 
 function openAlert(isWin, msg = '') {
-  var elAlert = document.querySelector('.alert')
+  let elAlert = document.querySelector('.alert')
   elAlert.querySelector('.msg').innerText = msg
   elAlert.style.backgroundColor = isWin ? 'var(--success)' : 'var(--danger)'
   elAlert.classList.toggle('active')
@@ -63,8 +63,7 @@ function closeAlert() {
 }
 
 function renderActiveBtn(selector, isActive) {
-  var element = document.querySelector(selector)
-  console.log('element', element)
+  const element = document.querySelector(selector)
   if (isActive) element.classList.add('active')
   else element.classList.remove('active')
 }

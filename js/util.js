@@ -6,13 +6,13 @@ function startTimer() {
   if (gTimerInterval) return
 
   // catch the DOM elements
-  var elTimer = document.querySelector('.timer')
-  var elSeconds = elTimer.querySelector('.seconds')
-  var elMinutes = elTimer.querySelector('.minutes')
+  let elTimer = document.querySelector('.timer')
+  let elSeconds = elTimer.querySelector('.seconds')
+  let elMinutes = elTimer.querySelector('.minutes')
 
   // create time vars - model
-  var seconds = 0
-  var minutes = 0
+  let seconds = 0
+  let minutes = 0
   gTimerInterval = setInterval(() => {
     seconds++
     if (seconds === 60) {
@@ -34,12 +34,12 @@ function resetTimer() {
   gTimerInterval = null
 
   // catch the DOM elements
-  var elTimer = document.querySelector('.timer')
-  var elSeconds = elTimer.querySelector('.seconds')
-  var elMinutes = elTimer.querySelector('.minutes')
+  const elTimer = document.querySelector('.timer')
+  const elSeconds = elTimer.querySelector('.seconds')
+  const elMinutes = elTimer.querySelector('.minutes')
   // create time vars - model
-  var seconds = 0
-  var minutes = 0
+  let seconds = 0
+  let minutes = 0
 
   // render to DOM
   elSeconds.innerText = seconds.toString().padStart(2, '0')
@@ -53,8 +53,8 @@ function getRandomInt(min, max) {
 }
 
 function getRandomColor() {
-  var letters = '0123456789ABCDEF'
-  var color = '#'
+  const letters = '0123456789ABCDEF'
+  let color = '#'
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)]
   }
@@ -62,42 +62,41 @@ function getRandomColor() {
 }
 
 function shuffleArray(array) {
-  for (var i = array.length - 1; i > 0; i--) {
-    var j = Math.floor(Math.random() * (i + 1))
-    var temp = array[i]
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = array[i]
     array[i] = array[j]
     array[j] = temp
   }
 }
 
 function printBoardForDebug(mat) {
-  var printedMat = []
-  for (var i = 0; i < mat.length; i++) {
+  const printedMat = []
+  for (let i = 0; i < mat.length; i++) {
     printedMat[i] = []
-    for (var j = 0; j < mat[0].length; j++) {
-      var currCell = mat[i][j]
-      var cellContent = currCell.isMine ? MINE : currCell.minesAroundCount
+    for (let j = 0; j < mat[0].length; j++) {
+      const currCell = mat[i][j]
+      const cellContent = currCell.isMine ? MINE : currCell.minesAroundCount
       printedMat[i][j] = cellContent
     }
   }
-  console.table(printedMat)
 }
 
 function findNegsLocation(board, pos) {
-  var negsLocation = []
-  for (var i = pos.i - 1; i <= pos.i + 1; i++) {
+  const negsLocation = []
+  for (let i = pos.i - 1; i <= pos.i + 1; i++) {
     if (i < 0 || i >= board.length) continue
-    for (var j = pos.j - 1; j <= pos.j + 1; j++) {
+    for (let j = pos.j - 1; j <= pos.j + 1; j++) {
       if (j < 0 || j >= board[0].length) continue
       if (pos.i === i && pos.j === j) continue
 
       negsLocation.push({ i, j })
     }
   }
+
   return negsLocation
 }
 
 function getCellByClass(pos) {
-  var elCell = document.querySelector(`.cell-${pos.i}-${pos.j}`)
-  return elCell
+  return document.querySelector(`.cell-${pos.i}-${pos.j}`)
 }

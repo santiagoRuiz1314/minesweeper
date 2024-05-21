@@ -11,10 +11,8 @@
 }
 
 body {
-  background-color: #fdfdfd;
+  background-color: #475569;
   text-align: center;
-  background-image: url('../assets/img/full-bloom.png');
-  background-repeat: repeat;
 }
 
 section {
@@ -30,6 +28,8 @@ section {
 /* ================================  */
 /* levels buttons */
 .btn-group {
+  display: flex;
+  flex-wrap: wrap;
   padding-block: 0.2rem;
 }
 
