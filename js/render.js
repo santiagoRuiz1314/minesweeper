@@ -33,7 +33,7 @@ function renderSmiley(isWin) {
 }
 
 function renderLives() {
-  var strHTML = `<span class="heart">❤</span>`.repeat(gGame.liveCount)
+  var strHTML = `<span class="heart">❤️</span>`.repeat(gGame.liveCount)
   strHTML += `<span class="death">❤</span>`.repeat(3 - gGame.liveCount)
   document.querySelector('.control-panel .lives').innerHTML = strHTML
 }

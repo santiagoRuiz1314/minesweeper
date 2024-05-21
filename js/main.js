@@ -24,12 +24,10 @@ var MINE = '💣'
 var FLAG = '🚩'
 
 function initGame() {
-  console.log('after 7 boom')
   resetTimer()
   gIsFirstClick = false
 
   if (gGame.is7Boom) {
-    console.log('im here')
     gGame = {
       isOn: false,
       shownCount: 0,
@@ -121,7 +119,7 @@ function cellClicked(elCell, i, j) {
     renderCell(elCell, cell)
     checkGameOver()
     if (gGame.isOn) {
-      setTimeout(function () {
+      setTimeout(() => {
         elSmiley.innerText = '😀'
       }, 400)
     }
@@ -136,9 +134,7 @@ function expandShown(board, i, j) {
   cell.isShown = true
   renderCell(elCell, cell)
 
-  if (cell.minesAroundCount > 0) {
-    return
-  }
+  if (cell.minesAroundCount > 0) return
 
   for (var i = pos.i - 1; i <= pos.i + 1; i++) {
     if (i < 0 || i >= board.length) continue
@@ -148,10 +144,20 @@ function expandShown(board, i, j) {
 
       var currCell = board[i][j]
 
-      if (!currCell.isMine && !currCell.isMarked && currCell.minesAroundCount === 0 && !currCell.isShown) {
+      if (
+        !currCell.isMine &&
+        !currCell.isMarked &&
+        currCell.minesAroundCount === 0 &&
+        !currCell.isShown
+      ) {
         // recursion
         expandShown(board, i, j)
-      } else if (!currCell.isMine && !currCell.isMarked && currCell.minesAroundCount > 0 && !currCell.isShown) {
+      } else if (
+        !currCell.isMine &&
+        !currCell.isMarked &&
+        currCell.minesAroundCount > 0 &&
+        !currCell.isShown
+      ) {
         currCell.isShown = true
         var elCell = getCellByClass({ i, j })
         renderCell(elCell, currCell)
@@ -421,8 +427,10 @@ function build7BoomBoard() {
         isMine: false,
         isMarked: false,
       }
-      if (+idx.charAt(0) === 7 || +idx.charAt(1) === 7 || (+idx % 7 === 0 && +idx !== 0)) mat[i][j].isMine = true
+      if (+idx.charAt(0) === 7 || +idx.charAt(1) === 7 || (+idx % 7 === 0 && +idx !== 0))
+        mat[i][j].isMine = true
     }
   }
+
   return mat
 }
