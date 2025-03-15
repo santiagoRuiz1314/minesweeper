@@ -14,7 +14,7 @@ Se eligió HTML5 para estructurar el sitio web porque:
 
 La estructura HTML se organizó para separar claramente las diferentes áreas funcionales: panel de control (con selección de dificultad, contador de minas y temporizador), tablero de juego dinámico, y botones de acción como reiniciar o cambiar configuraciones.
 
-##Test
+### Test
 Prueba el juego aca [Buscaminas](https://aviorkahalani.github.io/minesweeper/).
 
 ### CSS3
